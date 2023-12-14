@@ -1,8 +1,10 @@
 
-# NLP Educational Course Advisor
+# NEU COURSE COMPANION
+
+***"Our mission is to simplify the course selection process for NEU students, enhancing their academic experience."***
 
 ## Description
-This project is an NLP application designed to advise on educational courses. It utilizes machine learning for conversation modeling and features a frontend chatbot interface.
+This project is designed to assist Northeastern University (NEU) students in streamlining the course selection process for their degree. The project involves fine-tuning the LLaMA 2.7B language model for chatbot applications using the Hugging Face Transformers library. The trained model is then stored on the Hugging Face Model Hub for easy access and sharing. Additionally, the chatbot project includes the generation of prompts for course recommendations and graduation plans, providing a comprehensive tool for students to navigate their academic journey.
 
 ## Components
 - `advice.py`: Trains and fine-tunes the "NousResearch/Llama-2-7b-chat-hf" model on the "fightfei/INFO6105-llama2" dataset.
