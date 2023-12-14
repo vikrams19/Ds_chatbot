@@ -9,7 +9,7 @@ This project is designed to assist Northeastern University (NEU) students in str
 ## Components
 - `advice.py`: Trains and fine-tunes the "NousResearch/Llama-2-7b-chat-hf" model on the "fightfei/INFO6105-llama2" dataset.
 - `con_dataset.py`: Processes 'concentration.csv' to create a dataset for the NLP model.
-- `integration_trial7.html`: Frontend interface for interacting with the trained chatbot.
+- `integration_trial7a.html`: Frontend interface for interacting with the trained chatbot.
 
 ## Usage
 1. Prepare the dataset with `con_dataset.py`.
