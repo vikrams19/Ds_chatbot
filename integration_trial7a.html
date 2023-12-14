@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Frontend</title>
+    <style>
+        /* Your existing styles go here */
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #000000;
+        }
+
+        #container {
+            display: flex;
+            height: 100vh;
+        }
+
+        #contacts-column {
+            width: 300px;
+            background-color: #000000;
+            padding: 10px;
+            overflow-y: auto;
+            color: #fff;
+        }
+
+        .contact {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #000000;
+            transition: background-color 0.3s;
+        }
+
+        .contact:hover {
+            background-color: #000000;
+        }
+
+        #contacts-column .contact img {
+            width: 280px;
+            height: 300px;
+            border-radius: 20%;
+            margin-right: 50px;
+        }
+
+        #chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: url('neupic6.jpg') center center fixed no-repeat;
+    background-size: 100% 85%;
+    position: relative;
+    padding: 30px;
+            background-blend-mode: multiply;
+        }
+
+        #chat-header {
+            background-color: #f60000;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+            border-bottom: 2px solid #ff0008;
+            border-top: 2px solid #000; /* Add a black border at the top */
+            color: #fff;
+            margin-bottom: 20px;
+            border-radius: 15px;
+        }
+
+        #chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+
+            background-color: rgba(242, 235, 235, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(176, 171, 171, 0.3);
+        }
+
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #f80000;
+            color: #fff;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: #fff;
+            color: #000000;
+        }
+
+        #user-input {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            border-top: 2px solid #ff0008;
+
+            border-radius: 15px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #user-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            margin-right: 10px;
+            outline: none;
+            font-size: 16px;
+
+            color: #0f0e0e;
+
+        }
+
+        #user-input button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #ff0008;
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="contacts-column">
+        <div class="contact"><img src="./neupic2.png" ></div>
+        <div class="contact"></div>
+        <!-- Add more contacts as needed -->
+    </div>
+    <div id="chat-container">
+        <div id="chat-header">NEU CourseCompanion </div>
+        <div id="chat-messages"></div>
+        <div id="user-input">
+            <input type="text" id="user-message" placeholder="Type a message..." onkeydown="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+    var userPrompts = [];
+    // Index to keep track of the current prompt
+    var currentPromptIndex = -1;
+
+    // Function to handle key presses in the input field
+    function handleKeyPress(event) {
+        switch (event.key) {
+            case 'Enter':
+                event.preventDefault();
+                sendMessage();
+                break;
+            case 'ArrowUp':
+                event.preventDefault();
+                showPreviousPrompt();
+                break;
+            case 'ArrowDown':
+                event.preventDefault();
+                showNextPrompt();
+                break;
+        }
+    }
+
+    // Function to show the previous user prompt
+    function showPreviousPrompt() {
+        if (currentPromptIndex > 0) {
+            currentPromptIndex--;
+            document.getElementById('user-message').value = userPrompts[currentPromptIndex];
+        }
+    }
+
+    // Function to show the next user prompt
+    function showNextPrompt() {
+        if (currentPromptIndex < userPrompts.length - 1) {
+            currentPromptIndex++;
+            document.getElementById('user-message').value = userPrompts[currentPromptIndex];
+        }
+
+
+    }
+       async function sendMessage() {
+            var userMessage = document.getElementById('user-message').value;
+            if (userMessage.trim() === '') {
+                return;
+            }
+
+
+            // Add the user message to the prompts array
+            userPrompts.push(userMessage);
+            // Reset the current prompt index
+            currentPromptIndex = userPrompts.length;
+
+            appendMessage('user', userMessage);
+
+            try {
+                const modelResponse = await queryModel(userMessage);
+                const botResponse = modelResponse.generated_text;
+                appendMessage('bot', botResponse);
+            } catch (error) {
+                console.error('Error:', error.message, error.response?.data);
+                appendMessage('bot', 'Error fetching response.');
+            }
+
+            // Clear the user input field
+            document.getElementById('user-message').value = '';
+        }
+
+        async function queryModel(userMessage) {
+            try {
+                const response = await axios.post(
+                    "https://api-inference.huggingface.co/models/fightfei/llama2-7b-chat-INFO6105",
+                    { inputs: userMessage },
+                    {
+                        headers: {
+                            Authorization: "Bearer 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",
+                        },
+                    }
+                );
+                return response.data;
+            } catch (error) {
+                console.error('Error:', error.message);
+                throw error;
+            }
+        }
+
+
+
+        function appendMessage(sender, message) {
+            var chatMessages = document.getElementById('chat-messages');
+            var messageContainer = document.createElement('div');
+            var messageElement = document.createElement('div');
+            messageContainer.classList.add('message-container');
+            messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+            messageElement.textContent = message;
+            messageContainer.appendChild(messageElement);
+            chatMessages.appendChild(messageContainer);
+
+            // Scroll to the bottom of the chat container
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+        }
+
+        
+    </script>
+
+    
+
+</div>
+
+</body>
+</html>
