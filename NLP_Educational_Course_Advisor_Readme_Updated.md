@@ -45,7 +45,7 @@ GET https://nubanner.neu.edu/StudentRegistrationSsb/ssb/searchResults/searchResu
 ```
 Note: The response “data” key is coming as “null”. Hence, it was not integrated into this project.
 
-## Course Combination Script
+## Data Generation script ( Combination_genration.ipynb )
 ```python
 import pandas as pd
 from itertools import combinations
@@ -101,7 +101,26 @@ for combination in remaining_combinations:
         # Append the selected courses to the list
         selected_courses_list.append(selected_courses)
 ```
+### Usage
+- Prepare your course data in a CSV format. The CSV should have columns for course code, course number, and hours.
+- Replace 'Data_science_proj.csv' in the script with the actual name of your CSV file.
+- Set the target_total_hours variable to the total number of hours you need to achieve.
+- Identify the mandatory course by setting the mandatory_course variable. It should be in the format "CourseCode CourseNumber".
+- Run the script. It will read your CSV, process the data, and output a list of course combinations that meet the target hours.
+- The script handles courses with variable hours (e.g., '1/8 Hours', '1/4 Hours') by generating all possible hour values for such courses.
 
+### Notes
+- The script assumes that the data in the CSV file is well-structured and clean.
+- The script currently supports only one mandatory course. If you have multiple mandatory courses, modifications to the script will be needed.
+- The number of courses to be combined is set to 7 by default in the combinations() function. Adjust this number based on your specific requirements.
+
+### Troubleshooting
+- If you encounter errors related to file not found, ensure the CSV file name and path are correct.
+- If the script does not return any combinations, check if the target_total_hours is reasonable considering the courses' hours.
+- For any other errors, check the Python error message for hints on what might be wrong.
+
+### Conclusion
+This script is a handy tool for academic planning, allowing users to efficiently find course combinations that meet specific hourly requirements. It automates what can be a time-consuming and error-prone process, especially when dealing with a large number of courses and complex schedules.
 ## Next Steps
 Use the above script to create possible course combinations and train the Llama2 model.
 
