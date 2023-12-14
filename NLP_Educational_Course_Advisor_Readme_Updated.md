@@ -104,3 +104,12 @@ for combination in remaining_combinations:
 
 ## Next Steps
 Use the above script to create possible course combinations and train the Llama2 model.
+
+## Next Step: Prepare the dataset
+Use the above script to create possible course combinations and train the Llama2 model.
+As Llama2 model format is different when compared to the course combination file generated, use con_dataset.py to generate the code to train the dataset.
+
+## Training and Finetuning the model
+Use advice.py to train and finetune the model.
+
+## Integrate the model with frontend.
