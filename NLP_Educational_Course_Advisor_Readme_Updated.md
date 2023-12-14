@@ -4,7 +4,7 @@
 ***"Our mission is to simplify the course selection process for NEU students, enhancing their academic experience."***
 
 Website Link : 
-[https://657a63672a791f3f6d5934ac--incomparable-nasturtium-750cfb.netlify.app/]
+[NEU Course Companion](https://657a63672a791f3f6d5934ac--incomparable-nasturtium-750cfb.netlify.app/)
 
 ## Description
 This project is designed to assist Northeastern University (NEU) students in streamlining the course selection process for their degree. The project involves fine-tuning the LLaMA 2.7B language model for chatbot applications using the Hugging Face Transformers library. The trained model is then stored on the Hugging Face Model Hub for easy access and sharing. Additionally, the chatbot project includes the generation of prompts for course recommendations and graduation plans, providing a comprehensive tool for students to navigate their academic journey.
